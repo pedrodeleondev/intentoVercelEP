@@ -1,17 +1,14 @@
 import google.generativeai as genai
-import textwrap
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from amazoncaptcha import AmazonCaptcha
 from IPython.display import Markdown
+import textwrap
 import json
-import csv
 import sys
-import os
 sys.stdout.reconfigure(encoding='utf-8')
 
 #arreglos definidos
@@ -112,18 +109,6 @@ def obtenerLinksPS(nombre,linkProducto):
         }
     arregloDicPS.append(productoSimilarDic)
 
-def resolverCaptchaAmazon():
-    try:
-        # Resolver captcha si es necesario
-        captcha_img = driver.find_element(By.XPATH, "//div[@class='a-row a-text-center']//img").get_attribute('src')
-        input_field = driver.find_element(By.ID, 'captchacharacters')
-        captcha = AmazonCaptcha.fromlink(captcha_img)
-        captcha_value = AmazonCaptcha.solve(captcha)
-        input_field.send_keys(captcha_value)
-        continue_button = driver.find_element(By.CLASS_NAME, 'a-button-text')
-        continue_button.click()
-    except NoSuchElementException:
-        print('No CAPTCHA')
 
 def rebajar(text):
     text = text.replace('•', '  *')
